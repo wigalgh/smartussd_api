@@ -15,7 +15,7 @@ $TRAFFIC_ID= $_GET['trafficid'];
 $TIME=date("Y/m/d h:i:s");
 $today=date("Y-m-d");
 $RESPONSE_DATA = "";
-$mobile_moneyApi="https://isms.wigalsolutions.com/ismsweb/mobilemoney/";
+$mobile_moneyApi="https://api.reddeonline.com/v1/receive";
 $nickname="bakeside";
 
 
