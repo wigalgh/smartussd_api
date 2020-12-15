@@ -3,7 +3,7 @@ A PHP sample script that allows developer to integrate with the WIGAL Smart USSD
 
 We have also added text documents (thus; logs.txt and Transactions.txt) where all log files will be captured. The db_script folder contains the sql script to setup the databse for your integration.
 
+If you have not registered for your iSMS account for your bulk SMS solutions, kindly do so by using this link: https://isms.wigalsolutions.com/ismsweb/#toregister
 
-
-
+And for your payment solutions, signup with Redde Online here: https://app.reddeonline.com/register
 
