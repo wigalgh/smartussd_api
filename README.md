@@ -1,5 +1,5 @@
 # smartussd_api
-A PHP sample script that allows developers to integrate with the WIGAL USSD API without hustle. Note, this sample script comes with additional functions to integrate with the WIGAL services like the FROG for SMS, EMAIL and VOICE SMS sending and Reddeonline for Mobile Money Payments.
+A PHP sample script that allows developers to integrate with the WIGAL USSD API without hustle. Note, this sample script comes with additional functions to integrate with the WIGAL services like FROG for SMS, EMAIL and VOICE SMS sending and Reddeonline for Payment Solutions.
 
 
 If you have not registered for your FROG account for your bulk SMS solutions, kindly do so by using this link: https://frog.wigal.com.gh/login
