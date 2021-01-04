@@ -1,1 +1,16 @@
--
+--
+SMS request log on 2021/01/03 11:41:50=>  SUCCESS :: Message Sent Successfully
+
+Email request log on 2021/01/04 12:07:59=>  {"status":"REJECTED","reason":"Invalid request data: The username field is required."}
+
+Email request log on 2021/01/04 12:07:59=> 
+
+Email request log on 2021/01/04 12:31:36=>  {"status":"REJECTED","reason":"Invalid request data: The username field is required."}
+
+Email request log on 2021/01/04 12:31:36=> 
+
+Email request log on 2021/01/04 12:50:23=>  {"status":"REJECTED","reason":"Invalid request data: The username field is required."}
+
+Email request log on 2021/01/04 12:50:23=> 
+
+SMS request log on 2021/01/04 12:58:21=>  SUCCESS :: Message Sent Successfully

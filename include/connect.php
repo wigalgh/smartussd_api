@@ -1,7 +1,7 @@
-<?php
+	<?php
 	$servername = "localhost";
-	$user = "your_db_username";
-	$password = "your_db_password";
+	$user = "your_dbusername";
+	$password = "your_dbpassword";
 
 	try {
 	    $conn = new PDO("mysql:host=$servername;dbname=bakeside", $user, $password);

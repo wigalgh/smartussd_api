@@ -96,7 +96,7 @@ else
 
                        updateTracking($MSISDN,$SESSION_ID,$MODE,$USERNAME,$TIME,$DATA,'4');
                        $RESPONSE_DATA = "$NETWORKID|MORE|$MSISDN|$SESSION_ID|Confirm Donation Summary^Name: $donor_name ^Amount: GHS $DATA^$network Wallet Num: $walletno ^^1. Yes^2. No |$USERNAME |$TRAFFIC_ID";
-                       echo echo htmlspecialchars($RESPONSE_DATA);
+                       echo htmlspecialchars($RESPONSE_DATA);
                       updateProgress($MSISDN,$SESSION_ID,"amount",$DATA);
                   }
                     else {

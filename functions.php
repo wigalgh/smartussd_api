@@ -217,13 +217,13 @@ function sendSMS($msisdn,$message)
     $reciepients=$msisdn;
     $message=$message;
     $from='WIGAL';
-    $smsusername='your_isms_username';
-    $smspassword='your_isms_password';
+    $smsusername='your_username';
+    $smspassword='your_password';
     $sent_by="WIGAL";
     
 
-   //initiate api to send message
-    $messageApi='https://isms.wigalsolutions.com/ismsweb/sendmsg/';
+   //using the FROG legacy API to send simple SMS message
+    $messageApi='https://frog.wigal.com.gh/ismsweb/sendmsg';
 
     $params='username='.$smsusername.'&password='.$smspassword.'&from='.$from.'&to='.$reciepients.'&message='.$message;
 
@@ -237,6 +237,7 @@ function sendSMS($msisdn,$message)
 
     curl_close($ch);
 }
+
 
 
 function sendMobileMoney($clienttransid,$walletno,$network,$amount)
