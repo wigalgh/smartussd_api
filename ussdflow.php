@@ -46,7 +46,7 @@ else
   $walletno=$rowopt['walletno'];
   $volunteer_name=$rowopt['volunteer_name'];
   $age=$rowopt['age'];
-  $constituency=$rowopt['constituency'];
+  $email=$rowopt['email'];
 
     switch ($track)
     {
@@ -110,7 +110,7 @@ else
                 if (is_numeric($DATA)) {
                 
                      updateTracking($MSISDN,$SESSION_ID,$MODE,$USERNAME,$TIME,$DATA,'4');
-                     $RESPONSE_DATA = "$NETWORKID|MORE|$MSISDN|$SESSION_ID|Enter your Constituency:|$USERNAME |$TRAFFIC_ID";
+                     $RESPONSE_DATA = "$NETWORKID|MORE|$MSISDN|$SESSION_ID|Enter your Email Address:|$USERNAME |$TRAFFIC_ID";
                      echo $RESPONSE_DATA;
                      updateProgress($MSISDN,$SESSION_ID,"age",$DATA);
                    }
@@ -145,14 +145,22 @@ else
                     }
                   elseif($option== 'Volunteer') {
                                                          
+                       if (filter_var($DATA, FILTER_VALIDATE_EMAIL)) {
                        $fetchdis = getProgress($MSISDN);
                        $volunteer_name=$fetchdis['volunteer_name'];
                        $age=$fetchdis['age'];
 
                           updateTracking($MSISDN,$SESSION_ID,$MODE,$USERNAME,$TIME,$DATA,'5');
-                          $RESPONSE_DATA = "$NETWORKID|MORE|$MSISDN|$SESSION_ID|Confirm Summary^Name: $volunteer_name ^Age: $age^Constituency: $DATA ^^1. Yes^2. No |$USERNAME |$TRAFFIC_ID";
+                          $RESPONSE_DATA = "$NETWORKID|MORE|$MSISDN|$SESSION_ID|Confirm Summary^Name: $volunteer_name ^Age: $age^Email: $DATA ^^1. Yes^2. No |$USERNAME |$TRAFFIC_ID";
                           echo $RESPONSE_DATA;
-                         updateProgress($MSISDN,$SESSION_ID,"constituency",$DATA);
+                         updateProgress($MSISDN,$SESSION_ID,"email",$DATA);
+                       }
+                       else{
+                        updateTracking($MSISDN,$SESSION_ID,$MODE,$USERNAME,$TIME,$DATA,'4');
+                         $RESPONSE_DATA = "$NETWORKID|MORE|$MSISDN|$SESSION_ID|Invalid Email inputted, Kindly ensure you enter a valid Email.|$USERNAME |$TRAFFIC_ID";
+                         echo $RESPONSE_DATA;
+                        updateProgress($MSISDN,$SESSION_ID,"email",$DATA);
+                       }
                   }
               break;
 
@@ -163,12 +171,14 @@ else
                             $full_name=$fetchdis['volunteer_name'];
                             $mobile_number=$fetchdis['ID'];
                             $age=$fetchdis['age'];
-                            $constituency=$fetchdis['constituency'];
-                            $message= "Thank you $full_name from $constituency Constiteuncy for voluntering with Bakeside.";
+                            $email=$fetchdis['email'];
+                            $message= "Thank you $full_name with the email address $email for voluntering with Bakeside.";
 
-                              updateTracking($MSISDN,$SESSION_ID,$MODE,$USERNAME,$TIME,$DATA,'6');
-                              insertvolunteer($full_name,$mobile_number,$age,$constituency);
-                              sendSMS($mobile_number,$message);
+                            updateTracking($MSISDN,$SESSION_ID,$MODE,$USERNAME,$TIME,$DATA,'6');
+                            insertvolunteer($full_name,$mobile_number,$age,$email);
+                            sendSMS($mobile_number,$message);
+                            sendEmai($email,$message);
+                            sendVoice($mobile_number,$message);
                             $RESPONSE_DATA = "$NETWORKID|END|$MSISDN|$SESSION_ID|Thank you for Volunteering with Bakeside.|$USERNAME |$TRAFFIC_ID";
                              echo $RESPONSE_DATA;
 

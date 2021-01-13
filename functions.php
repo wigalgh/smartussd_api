@@ -35,12 +35,12 @@ include('include/connect.php');
 }
 
 
-function insertProgress($msisdn,$sessionid,$option,$donor_name,$amount,$network,$walletno,$volunteer_name,$age,$constituency) {
+function insertProgress($msisdn,$sessionid,$option,$donor_name,$amount,$network,$walletno,$volunteer_name,$age,$email) {
 include('include/connect.php');
 
 
 //query to insert passed parameters into the progress table//
-      $progressq="INSERT INTO `progress`(`ID`, `sessionId`, `option`, `donor_name`, `amount`, `network`, `walletno`, `volunteer_name`, `age`, `constituency`) VALUES ('$msisdn','$sessionid','$option','$donor_name', '$amount', '$network', '$walletno', '$volunteer_name', '$age', '$constituency')";
+      $progressq="INSERT INTO `progress`(`ID`, `sessionId`, `option`, `donor_name`, `amount`, `network`, `walletno`, `volunteer_name`, `age`, `email`) VALUES ('$msisdn','$sessionid','$option','$donor_name', '$amount', '$network', '$walletno', '$volunteer_name', '$age', '$email')";
       $progress=$conn->prepare($progressq);
       $progress->execute();
 }
@@ -109,8 +109,8 @@ if($field=="network"){
   if($field=="age"){
    $progressq="UPDATE `progress` SET `sessionId`='$sessionid', `age`='$data' WHERE `ID`='$msisdn'  ";
  }
-  if($field=="constituency"){
-   $progressq="UPDATE `progress` SET `sessionId`='$sessionid', `constituency`='$data' WHERE `ID`='$msisdn'  ";
+  if($field=="email"){
+   $progressq="UPDATE `progress` SET `sessionId`='$sessionid', `email`='$data' WHERE `ID`='$msisdn'  ";
  }
  
   $progress=$conn->prepare($progressq);
@@ -170,10 +170,10 @@ include('include/connect.php');
   $progress->execute();
 }
 
-function insertvolunteer($full_name,$mobile_number,$age,$constituency) {
+function insertvolunteer($full_name,$mobile_number,$age,$email) {
 include('include/connect.php');
 
-  $progressq="INSERT INTO `volunteers`(`full_name`, `mobile_number`, `age`, `constituency`) VALUES ('$full_name','$mobile_number','$age','$constituency')";
+  $progressq="INSERT INTO `volunteers`(`full_name`, `mobile_number`, `age`, `email`) VALUES ('$full_name','$mobile_number','$age','$email')";
   $progress=$conn->prepare($progressq);
   $progress->execute();
 }
@@ -213,19 +213,18 @@ include('include/connect.php');
 function sendSMS($msisdn,$message) 
 {
   include('include/connect.php');
-    $time=date("Y/m/d h:i:s");
-    $reciepients=$msisdn;
-    $message=$message;
-    $from='WIGAL';
-    $smsusername='your_username';
-    $smspassword='your_password';
-    $sent_by="WIGAL";
+    $time= date("Y/m/d h:i:s");
+    $reciepients= $msisdn;
+    $message= $message;
+    $from= 'your_senderid';
+    $frog_username= 'your_frog_username';
+    $frog_password= 'your_frog_password';
     
 
    //using the FROG legacy API to send simple SMS message
     $messageApi='https://frog.wigal.com.gh/ismsweb/sendmsg';
 
-    $params='username='.$smsusername.'&password='.$smspassword.'&from='.$from.'&to='.$reciepients.'&message='.$message;
+    $params='username='.$frog_username.'&password='.$frog_password.'&from='.$from.'&to='.$reciepients.'&message='.$message;
 
     $ch = curl_init();
     curl_setopt($ch,CURLOPT_URL,$messageApi);
@@ -238,6 +237,124 @@ function sendSMS($msisdn,$message)
     curl_close($ch);
 }
 
+
+function sendEmai($email,$message) 
+{
+  include('include/connect.php');
+    $time= date("Y/m/d h:i:s");
+    $reciepients= $email;
+    $message= $message;
+    $from= 'your_senderid';
+    $frog_username= 'your_frog_username';
+    $frog_password= 'your_frog_password';
+    $mesgid = rand(10, 99);
+
+   //using the FROG V2 API to send simple Email message
+    $messageApi='https://frog.wigal.com.gh/api/v2/sendmsg/';
+
+    $messagedata = array(
+    'username'=> $frog_username,
+    'password'=> $frog_password,
+    'senderid'=> $from,
+    'destinations'=> [
+            [
+              'destination'=> $reciepients,
+              'msgid'=> $mesgid 
+            ]
+        ],
+    'message'=> $message,
+    'service'=> 'EMAIL',
+    'subject'=> 'Thank you Message',
+    'fromemail'=> 'anioffei@wigal.com.gh', 
+    'smstype'=> ''
+    );
+
+  $jsonbody = json_encode($messagedata); 
+
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => $messageApi,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'POST',
+      CURLOPT_POSTFIELDS => $jsonbody,
+      CURLOPT_HTTPHEADER => array(
+        'Content-Type: application/json',
+        'Accept-Encoding: UTF-8'
+      ),
+    ));
+
+    $response = curl_exec($curl);
+
+    @file_put_contents('logs.txt',"\n" . "Email request log on ". $time . "=> " . $response . "\n",FILE_APPEND);
+
+    curl_close($curl);
+    // echo $response;
+}
+
+function sendVoice($mobile_number,$message) 
+{
+  include('include/connect.php');
+    $time= date("Y/m/d h:i:s");
+    $reciepients= $mobile_number;
+    $message= $message;
+    $from= 'your_senderid';
+    $frog_username= 'your_frog_username';
+    $frog_password= 'your_frog_password';
+    $mesgid = rand(10, 99);
+
+   //using the FROG V2 API to send simple Voice message
+    $messageApi='https://frog.wigal.com.gh/api/v2/sendmsg/';
+
+    $messagedata = array(
+    'username'=> $frog_username,
+    'password'=> $frog_password,
+    'senderid'=> $from,
+    'destinations'=> [
+            [
+              'destination'=> $reciepients,
+              'msgid'=> $mesgid 
+            ]
+        ],
+    'message'=> $message,
+    'service'=> 'VOICE',
+    'subject'=> 'Thank you Message',
+    'fromemail'=> '', 
+    'smstype'=> ''
+    );
+
+  $jsonbody = json_encode($messagedata); 
+
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => $messageApi,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'POST',
+      CURLOPT_POSTFIELDS => $jsonbody,
+      CURLOPT_HTTPHEADER => array(
+        'Content-Type: application/json',
+        'Accept-Encoding: UTF-8'
+      ),
+    ));
+
+    $response = curl_exec($curl);
+
+    @file_put_contents('logs.txt',"\n" . "Voice request log on ". $time . "=> " . $response . "\n",FILE_APPEND);
+
+    curl_close($curl);
+    // echo $response;
+}
 
 
 function sendMobileMoney($clienttransid,$walletno,$network,$amount)
