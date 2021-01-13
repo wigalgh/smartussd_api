@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Dec 14, 2020 at 01:40 PM
--- Server version: 10.3.21-MariaDB-log
--- PHP Version: 7.3.13
+-- Host: 127.0.0.1
+-- Generation Time: Jan 13, 2021 at 06:52 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.2.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -73,7 +73,7 @@ CREATE TABLE `progress` (
   `walletno` varchar(15) DEFAULT NULL,
   `volunteer_name` varchar(120) DEFAULT NULL,
   `age` varchar(20) DEFAULT NULL,
-  `constituency` varchar(120) DEFAULT NULL
+  `email` varchar(120) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -122,7 +122,7 @@ CREATE TABLE `volunteers` (
   `full_name` varchar(120) DEFAULT NULL,
   `mobile_number` varchar(120) NOT NULL,
   `age` int(10) DEFAULT NULL,
-  `constituency` varchar(120) NOT NULL,
+  `email` varchar(120) NOT NULL,
   `volunteered_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
