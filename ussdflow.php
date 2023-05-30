@@ -2,36 +2,33 @@
 include('include/connect.php');
 include('functions.php');
 
-$MSISDN =  $_GET['msisdn'];
-$SESSION_ID =$_GET['sessionid'];
-$NETWORKID = $_GET['network'];
-$MODE = $_GET['mode'];
-$DATA = $_GET['userdata'];
-
+$MSISDN=$_GET['msisdn'];
+$SESSION_ID=$_GET['sessionid'];
+$NETWORKID=$_GET['network'];
+$MODE=$_GET['mode'];
+$DATA=$_GET['userdata'];
 $USERNAME= $_GET['username'];
-
 $TRAFFIC_ID= $_GET['trafficid'];
 
 $TIME=date("Y/m/d h:i:s");
 $today=date("Y-m-d");
-$RESPONSE_DATA = "";
+$RESPONSE_DATA="";
 $mobile_moneyApi="https://api.reddeonline.com/v1/receive";
 $nickname="bakeside";
-
 
 $welcome="Welcome to Bakeside Campaign.^Select your Option:^^1. Donate ^2. Volunteer";
 
 //STEP ONE CHECK IF ITS START OF SESSION
 if ($MODE=="start")
 {
-    deleteTracking($MSISDN);
-    insertTracking($MSISDN,$SESSION_ID,$MODE,$USERNAME,$TIME,'1','1');
+deleteTracking($MSISDN);
+insertTracking($MSISDN,$SESSION_ID,$MODE,$USERNAME,$TIME,'1','1');
+$RESPONSE_DATA="$NETWORKID|MORE|$MSISDN|$SESSION_ID|$welcome|$USERNAME|$TRAFFIC_ID";
 
-      $RESPONSE_DATA = "$NETWORKID|MORE|$MSISDN|$SESSION_ID|$welcome|$USERNAME |$TRAFFIC_ID";
-        echo $RESPONSE_DATA;
+echo $RESPONSE_DATA;
 
-        deleteProgress($MSISDN);
-        insertProgress($MSISDN,$SESSION_ID,'','','',$NETWORKID,'','','','');
+deleteProgress($MSISDN);
+insertProgress($MSISDN,$SESSION_ID,'','','',$NETWORKID,'','','','');
 }
 else
  {
@@ -131,9 +128,12 @@ else
                           $donor_name=$fetchdis['donor_name'];
                           $network=$fetchdis['network'];
                              updateTracking($MSISDN,$SESSION_ID,$MODE,$USERNAME,$TIME,$DATA,'5');
-                             insertTransaction($amount,$donor_name,$walletno,$network);
                             $RESPONSE_DATA = "$NETWORKID|END|$MSISDN|$SESSION_ID|Your payment request has been initiated. Kindly approve the payment prompt from $network.|$USERNAME |$TRAFFIC_ID";
                             echo $RESPONSE_DATA;
+                            session_write_close();  //close the USSD seesion 
+                            fastcgi_finish_request();    //close the USSD seesion
+                            sleep(3); //wait for 3 seconds to iniate the payment request
+                            insertTransaction($amount,$donor_name,$walletno,$network,$TRAFFIC_ID);
                         }
 
                         else{
