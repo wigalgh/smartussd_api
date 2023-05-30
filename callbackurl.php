@@ -4,8 +4,8 @@
 	$data =  @file_get_contents('php://input'); //get callback response from Redde
 
 	//log data into appropriate text file
-	@file_put_contents('logs.txt',"Callback response log on ". $time ."=> ". $data . "\n",FILE_APPEND);
-	@file_put_contents('Transactions.txt',"Callback response on ".$time ."=> ". $data. "\n" ,FILE_APPEND);
+	// @file_put_contents('logs.txt',"Callback response log on ". $time ."=> ". $data . "\n",FILE_APPEND);
+	// @file_put_contents('Transactions.txt',"Callback response on ".$time ."=> ". $data. "\n" ,FILE_APPEND);
 	alllogs_log("Callback response log on " , $time , $data);  //Create the log folder and write the logs according to their date
 
 	//decode the data and proccess it

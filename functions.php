@@ -3,34 +3,35 @@
 /*Below are the various functions the ussdflow script depends on
  NB: These functions are self explanatory, so ensure to pay strict attention during your implementation.*/
 
+
 function deleteTracking($msisdn) {
 
 include('include/connect.php');
 
-//query to fetch all data of msisdn from tracking Table//
-    $resettq="DELETE FROM tracking WHERE ID='$msisdn' ";
-     $resett=$conn->prepare($resettq);
-     $resett->execute();
+  //query to fetch all data of msisdn from tracking Table//
+  $resettq="DELETE FROM tracking WHERE ID='$msisdn' ";
+  $resett=$conn->prepare($resettq);
+  $resett->execute();
 }
 
 
 function insertTracking($msisdn,$sessionid,$mode,$username,$time,$userdata,$track) {
 include('include/connect.php');
 
-//query to insert msisdn into the tracking table//
-   $new_menuq="INSERT INTO tracking VALUES('$msisdn','$sessionid','$mode','$username','$time','$userdata','$track')";
-        $new_menu=$conn->prepare($new_menuq);
-        $new_menu->execute();
+  //query to insert msisdn into the tracking table//
+  $new_menuq="INSERT INTO tracking VALUES('$msisdn','$sessionid','$mode','$username','$time','$userdata','$track')";
+  $new_menu=$conn->prepare($new_menuq);
+  $new_menu->execute();
 }
 
 
 function deleteProgress($msisdn) {
 include('include/connect.php');
 
-//query to delect msisdn from progress table//
-    $resett1q="DELETE  FROM progress WHERE ID='$msisdn' ";
-    $resett1=$conn->prepare($resett1q);
-    $resett1->execute();
+  //query to delect msisdn from progress table//
+  $resett1q="DELETE  FROM progress WHERE ID='$msisdn' ";
+  $resett1=$conn->prepare($resett1q);
+  $resett1->execute();
 }
 
 
@@ -38,10 +39,10 @@ function insertProgress($msisdn,$sessionid,$option,$donor_name,$amount,$network,
 include('include/connect.php');
 
 
-//query to insert passed parameters into the progress table//
-      $progressq="INSERT INTO `progress`(`ID`, `sessionId`, `option`, `donor_name`, `amount`, `network`, `walletno`, `volunteer_name`, `age`, `email`) VALUES ('$msisdn','$sessionid','$option','$donor_name', '$amount', '$network', '$walletno', '$volunteer_name', '$age', '$email')";
-      $progress=$conn->prepare($progressq);
-      $progress->execute();
+  //query to insert passed parameters into the progress table//
+  $progressq="INSERT INTO `progress`(`ID`, `sessionId`, `option`, `donor_name`, `amount`, `network`, `walletno`, `volunteer_name`, `age`, `email`) VALUES ('$msisdn','$sessionid','$option','$donor_name', '$amount', '$network', '$walletno', '$volunteer_name', '$age', '$email')";
+  $progress=$conn->prepare($progressq);
+  $progress->execute();
 }
 
 
@@ -52,22 +53,20 @@ include('include/connect.php');
   $check_menuq="SELECT * FROM tracking WHERE ID='$msisdn' ";
   $check_menu=$conn->prepare($check_menuq);
   $check_menu->execute();
-      $row=$check_menu->fetch();
-
-      return $row;
+  $row=$check_menu->fetch();
+  return $row;
 }
 
 
 function getProgress($msisdn) {
 include('include/connect.php');
 
-      //query to fetch all data of msisdn from progress Table//
-     $selectprogq="SELECT * FROM progress WHERE ID='$msisdn' ";
-     $selectprog=$conn->prepare($selectprogq);
-     $selectprog->execute();
-     $rowopt=$selectprog->fetch();
-
-      return $rowopt;
+  //query to fetch all data of msisdn from progress Table//
+  $selectprogq="SELECT * FROM progress WHERE ID='$msisdn' ";
+  $selectprog=$conn->prepare($selectprogq);
+  $selectprog->execute();
+  $rowopt=$selectprog->fetch();
+  return $rowopt;
 }
 
 
@@ -75,7 +74,7 @@ function updateTracking($msisdn,$sessionid,$mode,$username,$time,$userdata,$trac
 include('include/connect.php');
 
   //query to update msisdn with passed parameters into the tracking table//
- $menu_updateq="UPDATE tracking SET sessionId='$sessionid',mode='$mode',username='$username',`time`='$time',userData='$userdata',track='$track' WHERE ID='$msisdn'";
+  $menu_updateq="UPDATE tracking SET sessionId='$sessionid',mode='$mode',username='$username',`time`='$time',userData='$userdata',track='$track' WHERE ID='$msisdn'";
   $menu_update=$conn->prepare($menu_updateq);
   $menu_update->execute();
 }
@@ -118,7 +117,7 @@ if($field=="network"){
 
 
 
-function insertTransaction($amount,$donor_name,$walletno,$network) {
+function insertTransaction($amount,$donor_name,$walletno,$network,$TRAFFIC_ID) {
 include('include/connect.php');
 
 
@@ -128,17 +127,17 @@ $clienttransid = $clienttrans;
 
 $status="PROGRESS";
 
-      $progressq="INSERT INTO `transactions`(`clientid`, `donor_name`, `amount`, `status`, `reference`, `telcotransid`, `wallet_num`, `wallet_network`) VALUES ('$clienttransid','$donor_name','$amount','$status','donation payment','NULL','$walletno','$network')";
-      $progress=$conn->prepare($progressq);
-      $progress->execute();
+  $progressq="INSERT INTO `transactions`(`clientid`, `ussdtrafficid`, `donor_name`, `amount`, `status`, `reference`, `telcotransid`, `wallet_num`, `wallet_network`) VALUES ('$clienttransid','$TRAFFIC_ID','$donor_name','$amount','$status','donation payment','NULL','$walletno','$network')";
+  $progress=$conn->prepare($progressq);
+  $progress->execute();
 
-      sendMobileMoney($clienttransid,$walletno,$network,$amount);
+  sendMobileMoney($clienttransid,$walletno,$network,$amount,$TRAFFIC_ID);
 }
 
 function updateTransaction($clientid,$status) {
 include('include/connect.php');
 
- $menu_updateq="UPDATE transactions SET status='$status' WHERE clientid='$clientid'";
+  $menu_updateq="UPDATE transactions SET status='$status' WHERE clientid='$clientid'";
   $menu_update=$conn->prepare($menu_updateq);
   $menu_update->execute();
 
@@ -180,31 +179,29 @@ include('include/connect.php');
 function gettrans($clientid) {
 include('include/connect.php');
 
-     $selectprogq="SELECT * FROM transactions WHERE clientid='$clientid' ";
-     $selectprog=$conn->prepare($selectprogq);
-     $selectprog->execute();
-     $rowopt=$selectprog->fetch();
-
-      return $rowopt;
+  $selectprogq="SELECT * FROM transactions WHERE clientid='$clientid' ";
+  $selectprog=$conn->prepare($selectprogq);
+  $selectprog->execute();
+  $rowopt=$selectprog->fetch();
+  return $rowopt;
 }
 
 function getmmtrans($clientid) {
 include('include/connect.php');
 
-     $selectprogq="SELECT * FROM mm_transactions WHERE clienttransid='$clientid' and status='PAID' ";
-     $selectprog=$conn->prepare($selectprogq);
-     $selectprog->execute();
-     $rowopt=$selectprog->fetch();
-
-      return $rowopt;
+  $selectprogq="SELECT * FROM mm_transactions WHERE clienttransid='$clientid' and status='PAID' ";
+  $selectprog=$conn->prepare($selectprogq);
+  $selectprog->execute();
+  $rowopt=$selectprog->fetch();
+  return $rowopt;
 }
 
 function insertmmTransaction($clienttransid,$clientreference,$telcotransid,$transactionid,$status,$statusdate,$reason) {
 include('include/connect.php');
 
-         $progressq="INSERT INTO `mm_transactions`(`clienttransid`, `clientreference`, `telcotransid`, `transactionid`, `status`, `statusdate`, `reason`) VALUES ('$clienttransid','$clientreference','$telcotransid','$transactionid','$status','$statusdate','$reason')";
-      $progress=$conn->prepare($progressq);
-      $progress->execute();
+  $progressq="INSERT INTO `mm_transactions`(`clienttransid`, `clientreference`, `telcotransid`, `transactionid`, `status`, `statusdate`, `reason`) VALUES ('$clienttransid','$clientreference','$telcotransid','$transactionid','$status','$statusdate','$reason')";
+  $progress=$conn->prepare($progressq);
+  $progress->execute();
 }
 
 
@@ -224,6 +221,7 @@ function sendSMS($msisdn,$message)
     $messageApi='https://frog.wigal.com.gh/ismsweb/sendmsg';
 
     $params='username='.$frog_username.'&password='.$frog_password.'&from='.$from.'&to='.$reciepients.'&message='.$message;
+    alllogs_log("SMS Parameter log on " , $time , $params);
 
     $ch = curl_init();
     curl_setopt($ch,CURLOPT_URL,$messageApi);
@@ -231,7 +229,8 @@ function sendSMS($msisdn,$message)
     curl_setopt($ch,CURLOPT_POST,1);
     curl_setopt($ch,CURLOPT_POSTFIELDS,$params);
     $return=curl_exec($ch);
-    @file_put_contents('logs.txt',"\n" . "SMS request log on ". $time . "=> " . $return . "\n",FILE_APPEND);
+    // @file_put_contents('logs.txt',"\n" . "SMS request log on ". $time . "=> " . $return . "\n",FILE_APPEND);
+    alllogs_log("SMS request log on " , $time , $return);
 
     curl_close($ch);
 }
@@ -264,13 +263,14 @@ function sendEmai($email,$message)
     'message'=> $message,
     'service'=> 'EMAIL',
     'subject'=> 'Thank you Message',
-    'fromemail'=> 'anioffei@wigal.com.gh', 
+    'fromemail'=> 'support@wigal.com.gh', 
     'smstype'=> ''
     );
 
   $jsonbody = json_encode($messagedata); 
-
-    $curl = curl_init();
+  alllogs_log("Email Parameter log on " , $time , $jsonbody);
+  
+  $curl = curl_init();
 
     curl_setopt_array($curl, array(
       CURLOPT_URL => $messageApi,
@@ -290,7 +290,8 @@ function sendEmai($email,$message)
 
     $response = curl_exec($curl);
 
-    @file_put_contents('logs.txt',"\n" . "Email request log on ". $time . "=> " . $response . "\n",FILE_APPEND);
+    // @file_put_contents('logs.txt',"\n" . "Email request log on ". $time . "=> " . $response . "\n",FILE_APPEND);
+    alllogs_log("Email request log on " , $time , $response);
 
     curl_close($curl);
     // echo $response;
@@ -328,6 +329,7 @@ function sendVoice($mobile_number,$message)
     );
 
   $jsonbody = json_encode($messagedata); 
+  alllogs_log("Voice Parameter log on " , $time , $jsonbody);
 
     $curl = curl_init();
 
@@ -349,31 +351,36 @@ function sendVoice($mobile_number,$message)
 
     $response = curl_exec($curl);
 
-    @file_put_contents('logs.txt',"\n" . "Voice request log on ". $time . "=> " . $response . "\n",FILE_APPEND);
+    // @file_put_contents('logs.txt',"\n" . "Voice request log on ". $time . "=> " . $response . "\n",FILE_APPEND);
+    alllogs_log("Voice request log on " , $time , $response);
+
 
     curl_close($curl);
     // echo $response;
 }
 
 
-function sendMobileMoney($clienttransid,$walletno,$network,$amount)
+function sendMobileMoney($clienttransid,$walletno,$network,$amount,$TRAFFIC_ID)
 {
   $time=date("Y/m/d h:i:s");
 
   $params = array(
           'amount'=>$amount,
-          'appid'=>your_redde_appid,
+          'appid'=>"your_redde_appid",
           'clientreference'=>"Donation Payment by client",
           'clienttransid'=>$clienttransid,
           'description'=>"Donation Payment",
           'nickname'=>"Bakeside Campaign",
           'paymentoption'=>$network,
           'vouchercode'=>"",
-          'walletnumber'=>$walletno
+          'walletnumber'=>$walletno,
+          "ussdtrafficid"=>$TRAFFIC_ID  //Provide this if you want the OTP to be removed from your Payment prompt
           );
   $jsonbody = json_encode($params);
 
-    @file_put_contents('logs.txt',"Payment request log on ". $time ."=> ". $jsonbody . "\n",FILE_APPEND);
+  // @file_put_contents('logs.txt',"Payment request log on ". $time ."=> ". $jsonbody . "\n",FILE_APPEND);
+  alllogs_log("Payment request log on " , $time , $jsonbody);
+
 
    //initiate api to send Mobile Money Request
     $curl = curl_init();
@@ -394,7 +401,8 @@ function sendMobileMoney($clienttransid,$walletno,$network,$amount)
       );
 
    $response = curl_exec($curl);
-   @file_put_contents('logs.txt',"Payment response log on ".$time ."=> ". $response . "\n",FILE_APPEND);
+   // @file_put_contents('logs.txt',"Payment response log on ".$time ."=> ". $response . "\n",FILE_APPEND);
+   alllogs_log("Payment response log on " , $time , $response);
 
    $err = curl_error($curl);
 
@@ -412,6 +420,7 @@ function sendMobileMoney($clienttransid,$walletno,$network,$amount)
        }
     }
 }
+
 
 
 ?>
