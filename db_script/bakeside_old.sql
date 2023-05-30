@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 173.255.199.123
--- Generation Time: May 19, 2023 at 11:27 PM
--- Server version: 10.11.2-MariaDB
--- PHP Version: 7.3.33
+-- Host: 127.0.0.1
+-- Generation Time: Jan 13, 2021 at 06:52 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.2.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -37,7 +37,7 @@ CREATE TABLE `donations` (
   `wallet_network` varchar(120) DEFAULT NULL,
   `wallet_number` varchar(120) DEFAULT NULL,
   `payment_date` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -55,7 +55,7 @@ CREATE TABLE `mm_transactions` (
   `statusdate` varchar(120) NOT NULL,
   `reason` char(120) NOT NULL,
   `recorded_date` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,7 @@ CREATE TABLE `progress` (
   `volunteer_name` varchar(120) DEFAULT NULL,
   `age` varchar(20) DEFAULT NULL,
   `email` varchar(120) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -90,7 +90,7 @@ CREATE TABLE `tracking` (
   `time` datetime NOT NULL,
   `userData` varchar(10) NOT NULL,
   `track` int(100) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -101,7 +101,6 @@ CREATE TABLE `tracking` (
 CREATE TABLE `transactions` (
   `id` int(11) NOT NULL,
   `clientid` varchar(120) NOT NULL,
-  `ussdtrafficid` varchar(250) NOT NULL,
   `donor_name` varchar(120) NOT NULL,
   `amount` double(10,2) NOT NULL,
   `status` varchar(120) NOT NULL,
@@ -110,7 +109,7 @@ CREATE TABLE `transactions` (
   `wallet_num` varchar(120) DEFAULT NULL,
   `wallet_network` varchar(120) NOT NULL,
   `trans_date` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -125,7 +124,7 @@ CREATE TABLE `volunteers` (
   `age` int(10) DEFAULT NULL,
   `email` varchar(120) NOT NULL,
   `volunteered_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Indexes for dumped tables

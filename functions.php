@@ -3,7 +3,6 @@
 /*Below are the various functions the ussdflow script depends on
  NB: These functions are self explanatory, so ensure to pay strict attention during your implementation.*/
 
-
 function deleteTracking($msisdn) {
 
 include('include/connect.php');
